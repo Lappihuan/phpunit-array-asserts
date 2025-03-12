@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhrozenByte\PHPUnitArrayAsserts\Tests\Utils;
 
 use ArrayAccess;
+use ReturnTypeWillChange;
 
 /**
  * ArrayAccessible is a simple implementation of the ArrayAccess interface.
@@ -47,10 +48,7 @@ final class ArrayAccessible implements ArrayAccess
         return isset($this->data[$offset]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->data[$offset] ?? null;
     }

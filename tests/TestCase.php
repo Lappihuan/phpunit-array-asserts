@@ -25,6 +25,7 @@ use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait;
+use ReflectionClass;
 use ReflectionObject;
 use Symfony\Component\Yaml\Exception\ParseException as YamlParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -52,7 +53,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function mockConstraint(
         $constraint,
         array $invocationRules = [],
-        array $evaluateParameters = null
+        ?array $evaluateParameters = null
     ) {
         if (!($constraint instanceof Constraint)) {
             return $constraint;
@@ -102,10 +103,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return array[] test data sets
      */
-    protected function getTestDataSets(string $testName): array
+    protected static function getTestDataSets(string $testName): array
     {
         $error = null;
-        $testClassName = (new ReflectionObject($this))->getShortName();
+        $testClassName = new ReflectionClass(static::class)->getShortName();
         $testDatasetsFile = __DIR__ . '/data/' . $testClassName . '.yml';
 
         if (!isset(self::$testDataSets[$testClassName])) {
@@ -117,7 +118,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                 $error = 'Permission denied';
             } else {
                 try {
-                    self::$testDataSets[$testClassName] = $this->parseYaml(file_get_contents($testDatasetsFile));
+                    self::$testDataSets[$testClassName] = self::parseYaml(file_get_contents($testDatasetsFile));
                 } catch (YamlParseException $e) {
                     $error = sprintf('YAML parse error: %s', $e->getMessage());
                 }
@@ -155,7 +156,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @throws YamlParseException
      */
-    private function parseYaml(string $input)
+    private static function parseYaml(string $input)
     {
         $yaml = Yaml::parse($input);
 

@@ -28,6 +28,7 @@ use NoRewindIterator;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\InvalidArgumentException;
+use PhrozenByte\PHPUnitArrayAsserts\Tests\InvalidArrayAssertTestArgumentException;
 use Traversable;
 
 /**
@@ -77,17 +78,17 @@ class SequentialArray extends Constraint
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(int $minItems = 0, int $maxItems = null, $constraint = null, bool $ignoreKeys = false)
+    public function __construct(int $minItems = 0, ?int $maxItems = null, $constraint = null, bool $ignoreKeys = false)
     {
         if ($minItems < 0) {
-            throw InvalidArgumentException::create(1, 'non-negative integer');
+            throw InvalidArrayAssertTestArgumentException::create(1, 'non-negative integer');
         }
 
         if ($maxItems !== null) {
             if ($maxItems < 0) {
-                throw InvalidArgumentException::create(2, 'non-negative integer');
+                throw InvalidArrayAssertTestArgumentException::create(2, 'non-negative integer');
             } elseif ($minItems > $maxItems) {
-                throw InvalidArgumentException::create(2, 'integer not lesser than argument #1');
+                throw InvalidArrayAssertTestArgumentException::create(2, 'integer not lesser than argument #1');
             }
         }
 

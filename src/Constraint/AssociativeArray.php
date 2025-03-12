@@ -24,6 +24,7 @@ use LucidFrame\Console\ConsoleTable;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Util\Exporter;
 
 /**
  * Constraint that asserts that a value is an associative array matching a
@@ -88,7 +89,7 @@ class AssociativeArray extends Constraint
 
         $templateArguments = [];
         foreach ($this->constraints as $key => $constraint) {
-            $templateArguments[] = $this->exporter()->export($key);
+            $templateArguments[] = Exporter::export($key);
             $templateArguments[] = $constraint->toString();
         }
 
@@ -166,7 +167,7 @@ class AssociativeArray extends Constraint
     protected function failureDescription($other): string
     {
         if (!(is_array($other) || ($other instanceof ArrayAccess))) {
-            return $this->exporter()->export($other) . ' is an associative array';
+            return Exporter::export($other) . ' is an associative array';
         }
 
         return 'associative array matches constraints';
@@ -192,8 +193,8 @@ class AssociativeArray extends Constraint
             $valueExists = is_array($other) ? array_key_exists($key, $other) : $other->offsetExists($key);
 
             $table->addRow([
-                $this->exporter()->export($key),
-                $valueExists ? $this->exporter()->shortenedExport($other[$key]) : '',
+                Exporter::export($key),
+                $valueExists ? Exporter::shortenedExport($other[$key]) : '',
                 'Value ' . $constraint->toString(),
             ]);
         }
@@ -201,8 +202,8 @@ class AssociativeArray extends Constraint
         if (is_array($other)) {
             foreach (array_diff_key($other, $this->constraints) as $key => $value) {
                 $table->addRow([
-                    $this->exporter()->export($key),
-                    $this->exporter()->shortenedExport($value),
+                    Exporter::export($key),
+                    Exporter::shortenedExport($value),
                     ''
                 ]);
             }

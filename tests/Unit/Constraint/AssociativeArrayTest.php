@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhrozenByte\PHPUnitArrayAsserts\Tests\Unit\Constraint;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
@@ -35,13 +36,13 @@ use PhrozenByte\PHPUnitArrayAsserts\Tests\TestCase;
 class AssociativeArrayTest extends TestCase
 {
     /**
-     * @dataProvider dataProviderSelfDescribing
      *
      * @param Constraint[]|mixed[] $constraints
      * @param bool                 $allowMissing
      * @param bool                 $allowAdditional
      * @param string               $expectedDescription
      */
+    #[DataProvider('dataProviderSelfDescribing')]
     public function testSelfDescribing(
         array $constraints,
         bool $allowMissing,
@@ -57,20 +58,21 @@ class AssociativeArrayTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderSelfDescribing(): array
+    public static function dataProviderSelfDescribing(): array
     {
-        return $this->getTestDataSets('testSelfDescribing');
+        return self::getTestDataSets('testSelfDescribing');
     }
 
     /**
-     * @dataProvider dataProviderEvaluate
      *
      * @param Constraint[]|mixed[] $constraints
-     * @param bool                 $allowMissing
-     * @param bool                 $allowAdditional
-     * @param mixed                $other
-     * @param mixed[]              $expectedEvaluationValues
+     * @param bool $allowMissing
+     * @param bool $allowAdditional
+     * @param mixed $other
+     * @param mixed[] $expectedEvaluationValues
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderEvaluate')]
     public function testEvaluate(
         array $constraints,
         bool $allowMissing,
@@ -93,8 +95,8 @@ class AssociativeArrayTest extends TestCase
 
         $itemConstraint = new AssociativeArray($mockedConstraints, $allowMissing, $allowAdditional);
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrowsNot(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class
         );
     }
@@ -102,21 +104,22 @@ class AssociativeArrayTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderEvaluate(): array
+    public static function dataProviderEvaluate(): array
     {
-        return $this->getTestDataSets('testEvaluate');
+        return self::getTestDataSets('testEvaluate');
     }
 
     /**
-     * @dataProvider dataProviderEvaluateFail
      *
      * @param Constraint[]|mixed[] $constraints
-     * @param bool                 $allowMissing
-     * @param bool                 $allowAdditional
-     * @param mixed                $other
-     * @param mixed[]              $expectedEvaluationValues
-     * @param string               $expectedExceptionMessage
+     * @param bool $allowMissing
+     * @param bool $allowAdditional
+     * @param mixed $other
+     * @param mixed[] $expectedEvaluationValues
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderEvaluateFail')]
     public function testEvaluateFail(
         array $constraints,
         bool $allowMissing,
@@ -140,8 +143,8 @@ class AssociativeArrayTest extends TestCase
 
         $itemConstraint = new AssociativeArray($mockedConstraints, $allowMissing, $allowAdditional);
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrows(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class,
             $expectedExceptionMessage
         );
@@ -150,20 +153,21 @@ class AssociativeArrayTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderEvaluateFail(): array
+    public static function dataProviderEvaluateFail(): array
     {
-        return $this->getTestDataSets('testEvaluateFail');
+        return self::getTestDataSets('testEvaluateFail');
     }
 
     /**
-     * @dataProvider dataProviderPreEvaluateFail
      *
      * @param Constraint[]|mixed[] $constraints
-     * @param bool                 $allowMissing
-     * @param bool                 $allowAdditional
-     * @param mixed                $other
-     * @param string               $expectedExceptionMessage
+     * @param bool $allowMissing
+     * @param bool $allowAdditional
+     * @param mixed $other
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderPreEvaluateFail')]
     public function testPreEvaluateFail(
         array $constraints,
         bool $allowMissing,
@@ -175,8 +179,8 @@ class AssociativeArrayTest extends TestCase
 
         $itemConstraint = new AssociativeArray($mockedConstraints, $allowMissing, $allowAdditional);
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrows(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class,
             $expectedExceptionMessage
         );
@@ -185,19 +189,19 @@ class AssociativeArrayTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderPreEvaluateFail(): array
+    public static function dataProviderPreEvaluateFail(): array
     {
-        return $this->getTestDataSets('testPreEvaluateFail');
+        return self::getTestDataSets('testPreEvaluateFail');
     }
 
     /**
-     * @dataProvider dataProviderCountable
      *
      * @param Constraint[]|mixed[] $constraints
      * @param bool                 $allowMissing
      * @param bool                 $allowAdditional
      * @param int                  $expectedCount
      */
+    #[DataProvider('dataProviderCountable')]
     public function testCountable(
         array $constraints,
         bool $allowMissing,
@@ -213,9 +217,9 @@ class AssociativeArrayTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderCountable(): array
+    public static function dataProviderCountable(): array
     {
-        return $this->getTestDataSets('testCountable');
+        return self::getTestDataSets('testCountable');
     }
 
     /**

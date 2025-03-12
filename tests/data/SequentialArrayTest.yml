@@ -28,7 +28,7 @@ testInvalidParameters:
         maxItems: ~
         constraint: ~
         ignoreKeys: false
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #1 of PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray::__construct()
             must be a non-negative integer
@@ -36,7 +36,7 @@ testInvalidParameters:
         maxItems: -1
         constraint: ~
         ignoreKeys: false
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray::__construct()
             must be a non-negative integer
@@ -44,7 +44,7 @@ testInvalidParameters:
         maxItems: 1
         constraint: ~
         ignoreKeys: false
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray::__construct()
             must be an integer not lesser than argument #1

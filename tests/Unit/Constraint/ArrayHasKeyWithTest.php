@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhrozenByte\PHPUnitArrayAsserts\Tests\Unit\Constraint;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasKeyWith;
@@ -35,20 +36,21 @@ use SebastianBergmann\Exporter\Exporter;
 class ArrayHasKeyWithTest extends TestCase
 {
     /**
-     * @dataProvider dataProviderInvalidParameters
      *
-     * @param string|int       $key
+     * @param string|int $key
      * @param Constraint|mixed $constraint
-     * @param string           $expectedException
-     * @param string           $expectedExceptionMessage
+     * @param string $expectedException
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderInvalidParameters')]
     public function testInvalidParameters(
         $key,
         $constraint,
         string $expectedException,
         string $expectedExceptionMessage
     ): void {
-        $this->assertCallableThrows(static function () use ($key, $constraint) {
+        self::assertCallableThrows(static function () use ($key, $constraint) {
             new ArrayHasKeyWith($key, $constraint);
         }, $expectedException, $expectedExceptionMessage);
     }
@@ -56,19 +58,18 @@ class ArrayHasKeyWithTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderInvalidParameters(): array
+    public static function dataProviderInvalidParameters(): array
     {
-        return $this->getTestDataSets('testInvalidParameters');
+        return self::getTestDataSets('testInvalidParameters');
     }
 
     /**
-     * @dataProvider dataProviderSelfDescribing
      *
      * @param string|int       $key
      * @param Constraint|mixed $constraint
      * @param string           $expectedDescription
      */
-    public function testSelfDescribing($key, $constraint, string $expectedDescription): void
+    #[DataProvider('dataProviderSelfDescribing')] public function testSelfDescribing($key, $constraint, string $expectedDescription): void
     {
         $mockedConstraint = $this->mockConstraint($constraint, [ 'toString' => $this->once() ]);
 
@@ -81,17 +82,18 @@ class ArrayHasKeyWithTest extends TestCase
      */
     public function dataProviderSelfDescribing(): array
     {
-        return $this->getTestDataSets('testSelfDescribing');
+        return self::getTestDataSets('testSelfDescribing');
     }
 
     /**
-     * @dataProvider dataProviderEvaluate
      *
-     * @param string|int       $key
+     * @param string|int $key
      * @param Constraint|mixed $constraint
-     * @param mixed            $other
-     * @param mixed            $expectedEvaluationValue
+     * @param mixed $other
+     * @param mixed $expectedEvaluationValue
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderEvaluate')]
     public function testEvaluate($key, $constraint, $other, $expectedEvaluationValue): void
     {
         $mockedConstraint = $this->mockConstraint(
@@ -102,8 +104,8 @@ class ArrayHasKeyWithTest extends TestCase
 
         $itemConstraint = new ArrayHasKeyWith($key, $mockedConstraint);
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrowsNot(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class
         );
     }
@@ -111,20 +113,21 @@ class ArrayHasKeyWithTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderEvaluate(): array
+    public static function dataProviderEvaluate(): array
     {
-        return $this->getTestDataSets('testEvaluate');
+        return self::getTestDataSets('testEvaluate');
     }
 
     /**
-     * @dataProvider dataProviderEvaluateFail
      *
-     * @param string|int       $key
+     * @param string|int $key
      * @param Constraint|mixed $constraint
-     * @param mixed            $other
-     * @param mixed            $expectedEvaluationValue
-     * @param string           $expectedExceptionMessage
+     * @param mixed $other
+     * @param mixed $expectedEvaluationValue
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderEvaluateFail')]
     public function testEvaluateFail(
         $key,
         $constraint,
@@ -140,57 +143,58 @@ class ArrayHasKeyWithTest extends TestCase
 
         $itemConstraint = new ArrayHasKeyWith($key, $mockedConstraint);
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrows(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class,
-            sprintf($expectedExceptionMessage, (new Exporter())->export($other))
+            sprintf($expectedExceptionMessage, (new Exporter)->export($other))
         );
     }
 
     /**
      * @return array
      */
-    public function dataProviderEvaluateFail(): array
+    public static function dataProviderEvaluateFail(): array
     {
-        return $this->getTestDataSets('testEvaluateFail');
+        return self::getTestDataSets('testEvaluateFail');
     }
 
     /**
-     * @dataProvider dataProviderPreEvaluateFail
      *
-     * @param string|int       $key
+     * @param string|int $key
      * @param Constraint|mixed $constraint
-     * @param mixed            $other
-     * @param string           $expectedExceptionMessage
+     * @param mixed $other
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderPreEvaluateFail')]
     public function testPreEvaluateFail($key, $constraint, $other, string $expectedExceptionMessage): void
     {
         $mockedConstraint = $this->mockConstraint($constraint);
 
         $itemConstraint = new ArrayHasKeyWith($key, $mockedConstraint);
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrows(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class,
-            sprintf($expectedExceptionMessage, (new Exporter())->export($other))
+            sprintf($expectedExceptionMessage, (new Exporter)->export($other))
         );
     }
 
     /**
      * @return array
      */
-    public function dataProviderPreEvaluateFail(): array
+    public static function dataProviderPreEvaluateFail(): array
     {
-        return $this->getTestDataSets('testPreEvaluateFail');
+        return self::getTestDataSets('testPreEvaluateFail');
     }
 
     /**
-     * @dataProvider dataProviderCountable
      *
      * @param string|int       $key
      * @param Constraint|mixed $constraint
      * @param int              $expectedCount
      */
+    #[DataProvider('dataProviderCountable')]
     public function testCountable($key, $constraint, int $expectedCount): void
     {
         $mockedConstraint = $this->mockConstraint($constraint, [ 'count' => $this->once() ]);
@@ -202,8 +206,8 @@ class ArrayHasKeyWithTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderCountable(): array
+    public static function dataProviderCountable(): array
     {
-        return $this->getTestDataSets('testCountable');
+        return self::getTestDataSets('testCountable');
     }
 }

@@ -23,8 +23,8 @@ use ArrayAccess;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\InvalidArgumentException;
 use PhrozenByte\PHPUnitArrayAsserts\ArrayAssertsTrait;
 use PhrozenByte\PHPUnitArrayAsserts\Assert;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasItemWith;
@@ -33,6 +33,7 @@ use PhrozenByte\PHPUnitArrayAsserts\Constraint\AssociativeArray;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray;
 use PhrozenByte\PHPUnitArrayAsserts\Tests\TestCase;
 use PhrozenByte\PHPUnitThrowableAsserts\CachedCallableProxy;
+use PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException;
 use Traversable;
 
 /**
@@ -56,20 +57,23 @@ class ArrayAssertsTraitTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @dataProvider dataProviderAssociativeArray
      *
      * @param Constraint[] $constraints
-     * @param bool         $allowMissing
-     * @param bool         $allowAdditional
+     * @param bool $allowMissing
+     * @param bool $allowAdditional
+     * @throws \Throwable
      */
-    public function testAssociativeArray(
+    #[DataProvider('dataProviderAssociativeArray')]
+    public static function testAssociativeArray(
         array $constraints,
         bool $allowMissing,
-        bool $allowAdditional
+        bool $allowAdditional,
+        $array
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             AssociativeArray::class,
-            [ $constraints, $allowMissing, $allowAdditional ]
+            [ $constraints, $allowMissing, $allowAdditional ],
+            [ $array, '' ]
         );
 
         $callableProxy = new CachedCallableProxy(
@@ -79,60 +83,62 @@ class ArrayAssertsTraitTest extends TestCase
             $allowAdditional
         );
 
-        $this->assertCallableThrowsNot($callableProxy, InvalidArgumentException::class);
-        $this->assertInstanceOf(AssociativeArray::class, $callableProxy->getReturnValue());
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertInstanceOf(AssociativeArray::class, $callableProxy->getReturnValue());
     }
 
     /**
-     * @dataProvider dataProviderAssociativeArray
      *
-     * @param Constraint[]      $constraints
-     * @param bool              $allowMissing
-     * @param bool              $allowAdditional
+     * @param Constraint[] $constraints
+     * @param bool $allowMissing
+     * @param bool $allowAdditional
      * @param array|ArrayAccess $array
+     * @throws \Throwable
      */
-    public function testAssertAssociativeArray(
+    #[DataProvider('dataProviderAssociativeArray')]
+    public static function testAssertAssociativeArray(
         array $constraints,
         bool $allowMissing,
         bool $allowAdditional,
         $array
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             AssociativeArray::class,
             [ $constraints, $allowMissing, $allowAdditional ],
             [ $array, '' ]
         );
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy(
+        self::assertCallableThrowsNot(
+            self::callableProxy(
                 [ Assert::class, 'assertAssociativeArray' ],
                 $constraints,
                 $array,
                 $allowMissing,
                 $allowAdditional
             ),
-            InvalidArgumentException::class
+            InvalidArrayAssertTestArgumentException::class
         );
     }
 
     /**
      * @return array[]
      */
-    public function dataProviderAssociativeArray(): array
+    public static function dataProviderAssociativeArray(): array
     {
-        return $this->getTestDataSets('testAssociativeArray');
+        return self::getTestDataSets('testAssociativeArray');
     }
 
     /**
-     * @dataProvider dataProviderAssociativeArrayFail
      *
-     * @param Constraint[]      $constraints
-     * @param bool              $allowMissing
-     * @param bool              $allowAdditional
+     * @param Constraint[] $constraints
+     * @param bool $allowMissing
+     * @param bool $allowAdditional
      * @param array|ArrayAccess $array
-     * @param string            $expectedException
-     * @param string            $expectedExceptionMessage
+     * @param string $expectedException
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
+    #[DataProvider('dataProviderAssociativeArrayFail')]
     public function testAssertAssociativeArrayFail(
         array $constraints,
         bool $allowMissing,
@@ -141,14 +147,14 @@ class ArrayAssertsTraitTest extends TestCase
         string $expectedException,
         string $expectedExceptionMessage
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             AssociativeArray::class,
             [ $constraints, $allowMissing, $allowAdditional ],
             [ $array, '' ]
         );
 
-        $this->assertCallableThrows(
-            $this->callableProxy(
+        self::assertCallableThrows(
+            self::callableProxy(
                 [ Assert::class, 'assertAssociativeArray' ],
                 $constraints,
                 $array,
@@ -163,87 +169,92 @@ class ArrayAssertsTraitTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderAssociativeArrayFail(): array
+    public static function dataProviderAssociativeArrayFail(): array
     {
-        return $this->getTestDataSets('testAssociativeArrayFail');
+        return self::getTestDataSets('testAssociativeArrayFail');
     }
 
     /**
-     * @dataProvider dataProviderArrayHasKeyWith
      *
      * @param int|string $key
      * @param Constraint $constraint
+     * @throws \Throwable
      */
-    public function testArrayHasKeyWith(
+    #[DataProvider('dataProviderArrayHasKeyWith')]
+    public static function testArrayHasKeyWith(
         $key,
-        Constraint $constraint
+        Constraint $constraint,
+        $array
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             ArrayHasKeyWith::class,
-            [ $key, $constraint ]
+            [ $key, $constraint ],
+            [ $array, '']
         );
 
         $callableProxy = new CachedCallableProxy([ Assert::class, 'arrayHasKeyWith' ], $key, $constraint);
-        $this->assertCallableThrowsNot($callableProxy, InvalidArgumentException::class);
-        $this->assertInstanceOf(ArrayHasKeyWith::class, $callableProxy->getReturnValue());
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertInstanceOf(ArrayHasKeyWith::class, $callableProxy->getReturnValue());
     }
 
     /**
-     * @dataProvider dataProviderArrayHasKeyWith
      *
-     * @param int|string        $key
-     * @param Constraint        $constraint
+     * @param int|string $key
+     * @param Constraint $constraint
      * @param array|ArrayAccess $array
+     * @throws \Throwable
      */
-    public function testAssertArrayHasKeyWith(
+    #[DataProvider('dataProviderArrayHasKeyWith')]
+    public static function testAssertArrayHasKeyWith(
         $key,
         Constraint $constraint,
         $array
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             ArrayHasKeyWith::class,
             [ $key, $constraint ],
             [ $array, '' ]
         );
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ Assert::class, 'assertArrayHasKeyWith' ], $key, $constraint, $array),
-            InvalidArgumentException::class
+        self::assertCallableThrowsNot(
+            self::callableProxy([ Assert::class, 'assertArrayHasKeyWith' ], $key, $constraint, $array),
+            InvalidArrayAssertTestArgumentException::class
         );
     }
 
     /**
      * @return array[]
      */
-    public function dataProviderArrayHasKeyWith(): array
+    public static function dataProviderArrayHasKeyWith(): array
     {
-        return $this->getTestDataSets('testArrayHasKeyWith');
+        return self::getTestDataSets('testArrayHasKeyWith');
     }
 
     /**
-     * @dataProvider dataProviderArrayHasKeyWithFail
      *
-     * @param int|string        $key
-     * @param Constraint        $constraint
+     * @param int|string $key
+     * @param Constraint $constraint
      * @param array|ArrayAccess $array
-     * @param string            $expectedException
-     * @param string            $expectedExceptionMessage
+     * @param string $expectedException
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
-    public function testAssertArrayHasKeyWithFail(
+    #[DataProvider('dataProviderArrayHasKeyWithFail')]
+    public static function testAssertArrayHasKeyWithFail(
         $key,
         Constraint $constraint,
         $array,
         string $expectedException,
         string $expectedExceptionMessage
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             ArrayHasKeyWith::class,
             [ $key, $constraint ],
             [ $array, '' ]
         );
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ Assert::class, 'assertArrayHasKeyWith' ], $key, $constraint, $array),
+        self::assertCallableThrows(
+            self::callableProxy([ Assert::class, 'assertArrayHasKeyWith' ], $key, $constraint, $array),
             $expectedException,
             $expectedExceptionMessage
         );
@@ -252,44 +263,47 @@ class ArrayAssertsTraitTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderArrayHasKeyWithFail(): array
+    public static function dataProviderArrayHasKeyWithFail(): array
     {
-        return $this->getTestDataSets('testArrayHasKeyWithFail');
+        return self::getTestDataSets('testArrayHasKeyWithFail');
     }
 
     /**
-     * @dataProvider dataProviderSequentialArray
      *
-     * @param int             $minItems
-     * @param int|null        $maxItems
+     * @param int $minItems
+     * @param int|null $maxItems
      * @param Constraint|null $constraint
-     * @param bool            $ignoreKeys
+     * @param bool $ignoreKeys
+     * @throws \Throwable
      */
-    public function testSequentialArray(
+    #[DataProvider('dataProviderSequentialArray')]
+    public static function testSequentialArray(
         int $minItems,
         ?int $maxItems,
         ?Constraint $constraint,
-        bool $ignoreKeys
+        bool $ignoreKeys,
+        $array
     ): void {
         $constraintArgs = [ $minItems, $maxItems, $constraint, $ignoreKeys ];
-        $this->mockConstraintInstance(SequentialArray::class, $constraintArgs);
+        self::mockConstraintInstance(SequentialArray::class, $constraintArgs, [ $array, '' ]);
 
         $callableProxy = new CachedCallableProxy([ Assert::class, 'sequentialArray' ], ...$constraintArgs);
 
-        $this->assertCallableThrowsNot($callableProxy, InvalidArgumentException::class);
-        $this->assertInstanceOf(SequentialArray::class, $callableProxy->getReturnValue());
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertInstanceOf(SequentialArray::class, $callableProxy->getReturnValue());
     }
 
     /**
-     * @dataProvider dataProviderSequentialArray
      *
-     * @param int               $minItems
-     * @param int|null          $maxItems
-     * @param Constraint|null   $constraint
-     * @param bool              $ignoreKeys
+     * @param int $minItems
+     * @param int|null $maxItems
+     * @param Constraint|null $constraint
+     * @param bool $ignoreKeys
      * @param array|Traversable $array
+     * @throws \Throwable
      */
-    public function testAssertSequentialArray(
+    #[DataProvider('dataProviderSequentialArray')]
+    public static function testAssertSequentialArray(
         int $minItems,
         ?int $maxItems,
         ?Constraint $constraint,
@@ -297,34 +311,35 @@ class ArrayAssertsTraitTest extends TestCase
         $array
     ): void {
         $constraintArgs = [ $minItems, $maxItems, $constraint, $ignoreKeys ];
-        $this->mockConstraintInstance(SequentialArray::class, $constraintArgs, [ $array, '' ]);
+        self::mockConstraintInstance(SequentialArray::class, $constraintArgs, [ $array, '' ]);
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ Assert::class, 'assertSequentialArray' ], $array, ...$constraintArgs),
-            InvalidArgumentException::class
+        self::assertCallableThrowsNot(
+            self::callableProxy([ Assert::class, 'assertSequentialArray' ], $array, ...$constraintArgs),
+            InvalidArrayAssertTestArgumentException::class
         );
     }
 
     /**
      * @return array[]
      */
-    public function dataProviderSequentialArray(): array
+    public static function dataProviderSequentialArray(): array
     {
-        return $this->getTestDataSets('testSequentialArray');
+        return self::getTestDataSets('testSequentialArray');
     }
 
     /**
-     * @dataProvider dataProviderSequentialArrayFail
      *
-     * @param int               $minItems
-     * @param int|null          $maxItems
-     * @param Constraint|null   $constraint
-     * @param bool              $ignoreKeys
+     * @param int $minItems
+     * @param int|null $maxItems
+     * @param Constraint|null $constraint
+     * @param bool $ignoreKeys
      * @param array|Traversable $array
-     * @param string            $expectedException
-     * @param string            $expectedExceptionMessage
+     * @param string $expectedException
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
-    public function testAssertSequentialArrayFail(
+    #[DataProvider('dataProviderSequentialArrayFail')]
+    public static function testAssertSequentialArrayFail(
         int $minItems,
         ?int $maxItems,
         ?Constraint $constraint,
@@ -334,10 +349,10 @@ class ArrayAssertsTraitTest extends TestCase
         string $expectedExceptionMessage
     ): void {
         $constraintArgs = [ $minItems, $maxItems, $constraint, $ignoreKeys ];
-        $this->mockConstraintInstance(SequentialArray::class, $constraintArgs, [ $array, '' ]);
+        self::mockConstraintInstance(SequentialArray::class, $constraintArgs, [ $array, '' ]);
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ Assert::class, 'assertSequentialArray' ], $array, ...$constraintArgs),
+        self::assertCallableThrows(
+            self::callableProxy([ Assert::class, 'assertSequentialArray' ], $array, ...$constraintArgs),
             $expectedException,
             $expectedExceptionMessage
         );
@@ -346,87 +361,92 @@ class ArrayAssertsTraitTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderSequentialArrayFail(): array
+    public static function dataProviderSequentialArrayFail(): array
     {
-        return $this->getTestDataSets('testSequentialArrayFail');
+        return self::getTestDataSets('testSequentialArrayFail');
     }
 
     /**
-     * @dataProvider dataProviderArrayHasItemWith
      *
-     * @param int        $index
+     * @param int $index
      * @param Constraint $constraint
+     * @throws \Throwable
      */
-    public function testArrayHasItemWith(
+    #[DataProvider('dataProviderArrayHasItemWith')]
+    public static function testArrayHasItemWith(
         int $index,
-        Constraint $constraint
+        Constraint $constraint,
+        $array
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             ArrayHasItemWith::class,
-            [ $index, $constraint ]
+            [ $index, $constraint ],
+            [ $array, '' ]
         );
 
         $callableProxy = new CachedCallableProxy([ Assert::class, 'arrayHasItemWith' ], $index, $constraint);
-        $this->assertCallableThrowsNot($callableProxy, InvalidArgumentException::class);
-        $this->assertInstanceOf(ArrayHasItemWith::class, $callableProxy->getReturnValue());
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertInstanceOf(ArrayHasItemWith::class, $callableProxy->getReturnValue());
     }
 
     /**
-     * @dataProvider dataProviderArrayHasItemWith
      *
-     * @param int               $index
-     * @param Constraint        $constraint
+     * @param int $index
+     * @param Constraint $constraint
      * @param array|Traversable $array
+     * @throws \Throwable
      */
-    public function testAssertArrayHasItemWith(
+    #[DataProvider('dataProviderArrayHasItemWith')]
+    public static function testAssertArrayHasItemWith(
         int $index,
         Constraint $constraint,
         $array
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             ArrayHasItemWith::class,
             [ $index, $constraint ],
             [ $array, '' ]
         );
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ Assert::class, 'assertArrayHasItemWith' ], $index, $constraint, $array),
-            InvalidArgumentException::class
+        self::assertCallableThrowsNot(
+            self::callableProxy([ Assert::class, 'assertArrayHasItemWith' ], $index, $constraint, $array),
+            InvalidArrayAssertTestArgumentException::class
         );
     }
 
     /**
      * @return array[]
      */
-    public function dataProviderArrayHasItemWith(): array
+    public static function dataProviderArrayHasItemWith(): array
     {
-        return $this->getTestDataSets('testArrayHasItemWith');
+        return self::getTestDataSets('testArrayHasItemWith');
     }
 
     /**
-     * @dataProvider dataProviderArrayHasItemWithFail
      *
-     * @param int               $index
-     * @param Constraint        $constraint
+     * @param int $index
+     * @param Constraint $constraint
      * @param array|Traversable $array
-     * @param string            $expectedException
-     * @param string            $expectedExceptionMessage
+     * @param string $expectedException
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
-    public function testAssertArrayHasItemWithFail(
+    #[DataProvider('dataProviderArrayHasItemWithFail')]
+    public static function testAssertArrayHasItemWithFail(
         int $index,
         Constraint $constraint,
         $array,
         string $expectedException,
         string $expectedExceptionMessage
     ): void {
-        $this->mockConstraintInstance(
+        self::mockConstraintInstance(
             ArrayHasItemWith::class,
             [ $index, $constraint ],
             [ $array, '' ]
         );
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ Assert::class, 'assertArrayHasItemWith' ], $index, $constraint, $array),
+        self::assertCallableThrows(
+            self::callableProxy([ Assert::class, 'assertArrayHasItemWith' ], $index, $constraint, $array),
             $expectedException,
             $expectedExceptionMessage
         );
@@ -435,9 +455,9 @@ class ArrayAssertsTraitTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderArrayHasItemWithFail(): array
+    public static function dataProviderArrayHasItemWithFail(): array
     {
-        return $this->getTestDataSets('testArrayHasItemWithFail');
+        return self::getTestDataSets('testArrayHasItemWithFail');
     }
 
     /**
@@ -447,10 +467,10 @@ class ArrayAssertsTraitTest extends TestCase
      *
      * @return MockInterface
      */
-    private function mockConstraintInstance(
+    private static function mockConstraintInstance(
         string $className,
         array $constructorArguments = [],
-        array $evaluateArguments = null
+        ?array $evaluateArguments = null
     ): MockInterface {
         $instanceMock = Mockery::mock('overload:' . $className, Constraint::class);
 

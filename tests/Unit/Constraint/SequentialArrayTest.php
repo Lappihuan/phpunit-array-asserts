@@ -39,12 +39,13 @@ class SequentialArrayTest extends TestCase
     /**
      * @dataProvider dataProviderInvalidParameters
      *
-     * @param int                   $minItems
-     * @param int|null              $maxItems
+     * @param int $minItems
+     * @param int|null $maxItems
      * @param Constraint|mixed|null $constraint
-     * @param bool                  $ignoreKeys
-     * @param string                $expectedException
-     * @param string                $expectedExceptionMessage
+     * @param bool $ignoreKeys
+     * @param string $expectedException
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
     public function testInvalidParameters(
         int $minItems,
@@ -54,7 +55,7 @@ class SequentialArrayTest extends TestCase
         string $expectedException,
         string $expectedExceptionMessage
     ): void {
-        $this->assertCallableThrows(static function () use ($minItems, $maxItems, $constraint, $ignoreKeys) {
+        self::assertCallableThrows(static function () use ($minItems, $maxItems, $constraint, $ignoreKeys) {
             new SequentialArray($minItems, $maxItems, $constraint, $ignoreKeys);
         }, $expectedException, $expectedExceptionMessage);
     }
@@ -64,7 +65,7 @@ class SequentialArrayTest extends TestCase
      */
     public function dataProviderInvalidParameters(): array
     {
-        return $this->getTestDataSets('testInvalidParameters');
+        return self::getTestDataSets('testInvalidParameters');
     }
 
     /**
@@ -97,17 +98,18 @@ class SequentialArrayTest extends TestCase
      */
     public function dataProviderSelfDescribing(): array
     {
-        return $this->getTestDataSets('testSelfDescribing');
+        return self::getTestDataSets('testSelfDescribing');
     }
 
     /**
      * @dataProvider dataProviderEvaluate
      *
-     * @param int                   $minItems
-     * @param int|null              $maxItems
+     * @param int $minItems
+     * @param int|null $maxItems
      * @param Constraint|mixed|null $constraint
-     * @param bool                  $ignoreKeys
-     * @param mixed                 $other
+     * @param bool $ignoreKeys
+     * @param mixed $other
+     * @throws \Throwable
      */
     public function testEvaluate(int $minItems, ?int $maxItems, $constraint, bool $ignoreKeys, $other): void
     {
@@ -121,8 +123,8 @@ class SequentialArrayTest extends TestCase
 
         $itemConstraint = new SequentialArray($minItems, $maxItems, $mockedConstraint, $ignoreKeys);
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrowsNot(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class
         );
     }
@@ -132,19 +134,20 @@ class SequentialArrayTest extends TestCase
      */
     public function dataProviderEvaluate(): array
     {
-        return $this->getTestDataSets('testEvaluate');
+        return self::getTestDataSets('testEvaluate');
     }
 
     /**
      * @dataProvider dataProviderEvaluateFail
      *
-     * @param int                   $minItems
-     * @param int|null              $maxItems
+     * @param int $minItems
+     * @param int|null $maxItems
      * @param Constraint|mixed|null $constraint
-     * @param bool                  $ignoreKeys
-     * @param mixed                 $other
-     * @param int                   $expectedEvaluationCount
-     * @param string                $expectedExceptionMessage
+     * @param bool $ignoreKeys
+     * @param mixed $other
+     * @param int $expectedEvaluationCount
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
     public function testEvaluateFail(
         int $minItems,
@@ -165,10 +168,10 @@ class SequentialArrayTest extends TestCase
 
         $itemConstraint = new SequentialArray($minItems, $maxItems, $mockedConstraint, $ignoreKeys);
 
-        $this->assertCallableThrows(
+        self::assertCallableThrows(
             new CallableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class,
-            sprintf($expectedExceptionMessage, (new Exporter())->export($other))
+            sprintf($expectedExceptionMessage, (new Exporter)->export($other))
         );
     }
 
@@ -177,18 +180,19 @@ class SequentialArrayTest extends TestCase
      */
     public function dataProviderEvaluateFail(): array
     {
-        return $this->getTestDataSets('testEvaluateFail');
+        return self::getTestDataSets('testEvaluateFail');
     }
 
     /**
      * @dataProvider dataProviderPreEvaluateFail
      *
-     * @param int                   $minItems
-     * @param int|null              $maxItems
+     * @param int $minItems
+     * @param int|null $maxItems
      * @param Constraint|mixed|null $constraint
-     * @param bool                  $ignoreKeys
-     * @param mixed                 $other
-     * @param string                $expectedExceptionMessage
+     * @param bool $ignoreKeys
+     * @param mixed $other
+     * @param string $expectedExceptionMessage
+     * @throws \Throwable
      */
     public function testPreEvaluateFail(
         int $minItems,
@@ -202,10 +206,10 @@ class SequentialArrayTest extends TestCase
 
         $itemConstraint = new SequentialArray($minItems, $maxItems, $mockedConstraint, $ignoreKeys);
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrows(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class,
-            sprintf($expectedExceptionMessage, (new Exporter())->export($other))
+            sprintf($expectedExceptionMessage, (new Exporter)->export($other))
         );
     }
 
@@ -214,9 +218,12 @@ class SequentialArrayTest extends TestCase
      */
     public function dataProviderPreEvaluateFail(): array
     {
-        return $this->getTestDataSets('testPreEvaluateFail');
+        return self::getTestDataSets('testPreEvaluateFail');
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function testIteratorWithIntermediatePointer(): void
     {
         $itemConstraint = new SequentialArray();
@@ -234,8 +241,8 @@ class SequentialArrayTest extends TestCase
             }
         };
 
-        $this->assertCallableThrowsNot(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrowsNot(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             ExpectationFailedException::class
         );
 
@@ -243,6 +250,9 @@ class SequentialArrayTest extends TestCase
         $this->assertSame(4, $other->current());
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function testGeneratorWithIntermediatePointer(): void
     {
         $expectedException = ExpectationFailedException::class;
@@ -259,10 +269,10 @@ class SequentialArrayTest extends TestCase
         $other->next();
         $other->next();
 
-        $this->assertCallableThrows(
-            $this->callableProxy([ $itemConstraint, 'evaluate' ], $other),
+        self::assertCallableThrows(
+            self::callableProxy([ $itemConstraint, 'evaluate' ], $other),
             $expectedException,
-            sprintf($expectedExceptionMessage, (new Exporter())->export($other))
+            sprintf($expectedExceptionMessage, (new Exporter)->export($other))
         );
     }
 
@@ -296,6 +306,6 @@ class SequentialArrayTest extends TestCase
      */
     public function dataProviderCountable(): array
     {
-        return $this->getTestDataSets('testCountable');
+        return self::getTestDataSets('testCountable');
     }
 }

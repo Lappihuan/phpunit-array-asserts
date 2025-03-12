@@ -46,7 +46,7 @@ testAssociativeArray:
 testAssociativeArrayFail:
     -   <<: *testAssociativeArrayBase
         array: this is no array
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertAssociativeArray()
             must be an array or ArrayAccess
@@ -54,7 +54,7 @@ testAssociativeArrayFail:
         allowAdditional: false
         array:
             ~object: PhrozenByte\PHPUnitArrayAsserts\Tests\Utils\ArrayAccessible
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertAssociativeArray()
             must be an array when argument #4 is set to true
@@ -74,7 +74,7 @@ testArrayHasKeyWith:
 testArrayHasKeyWithFail:
     -   <<: *testArrayHasKeyWithBase
         array: this is no array
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #3 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertArrayHasKeyWith()
             must be an array or ArrayAccess
@@ -90,7 +90,7 @@ testSequentialArray:
 testSequentialArrayFail:
     -   <<: *testSequentialArrayBase
         array: this is no array
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #1 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertSequentialArray()
             must be an array or Traversable
@@ -106,7 +106,7 @@ testArrayHasItemWith:
 testArrayHasItemWithFail:
     -   <<: *testArrayHasItemWithBase
         array: this is no array
-        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
         expectedExceptionMessage: >-
             Argument #3 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertArrayHasItemWith()
             must be an array or Traversable
