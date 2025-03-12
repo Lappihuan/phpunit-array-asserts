@@ -48,7 +48,7 @@ testInvalidParameters:
             - "this is no valid key"
         constraint:
             ~object: PhrozenByte\PHPUnitArrayAsserts\Tests\Utils\TestConstraint
-        expectedException: PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException
+        expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
             Argument #1 of PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasKeyWith::__construct()
             must be an integer or string

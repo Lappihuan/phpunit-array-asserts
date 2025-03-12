@@ -33,7 +33,7 @@ use PhrozenByte\PHPUnitArrayAsserts\Constraint\AssociativeArray;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray;
 use PhrozenByte\PHPUnitArrayAsserts\Tests\TestCase;
 use PhrozenByte\PHPUnitThrowableAsserts\CachedCallableProxy;
-use PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException;
+use PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException;
 use Traversable;
 
 /**
@@ -83,7 +83,7 @@ class ArrayAssertsTraitTest extends TestCase
             $allowAdditional
         );
 
-        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertArgumentException::class);
         self::assertInstanceOf(AssociativeArray::class, $callableProxy->getReturnValue());
     }
 
@@ -116,7 +116,7 @@ class ArrayAssertsTraitTest extends TestCase
                 $allowMissing,
                 $allowAdditional
             ),
-            InvalidArrayAssertTestArgumentException::class
+            InvalidArrayAssertArgumentException::class
         );
     }
 
@@ -193,7 +193,7 @@ class ArrayAssertsTraitTest extends TestCase
         );
 
         $callableProxy = new CachedCallableProxy([ Assert::class, 'arrayHasKeyWith' ], $key, $constraint);
-        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertArgumentException::class);
         self::assertInstanceOf(ArrayHasKeyWith::class, $callableProxy->getReturnValue());
     }
 
@@ -218,7 +218,7 @@ class ArrayAssertsTraitTest extends TestCase
 
         self::assertCallableThrowsNot(
             self::callableProxy([ Assert::class, 'assertArrayHasKeyWith' ], $key, $constraint, $array),
-            InvalidArrayAssertTestArgumentException::class
+            InvalidArrayAssertArgumentException::class
         );
     }
 
@@ -289,7 +289,7 @@ class ArrayAssertsTraitTest extends TestCase
 
         $callableProxy = new CachedCallableProxy([ Assert::class, 'sequentialArray' ], ...$constraintArgs);
 
-        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertArgumentException::class);
         self::assertInstanceOf(SequentialArray::class, $callableProxy->getReturnValue());
     }
 
@@ -315,7 +315,7 @@ class ArrayAssertsTraitTest extends TestCase
 
         self::assertCallableThrowsNot(
             self::callableProxy([ Assert::class, 'assertSequentialArray' ], $array, ...$constraintArgs),
-            InvalidArrayAssertTestArgumentException::class
+            InvalidArrayAssertArgumentException::class
         );
     }
 
@@ -385,7 +385,7 @@ class ArrayAssertsTraitTest extends TestCase
         );
 
         $callableProxy = new CachedCallableProxy([ Assert::class, 'arrayHasItemWith' ], $index, $constraint);
-        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertTestArgumentException::class);
+        self::assertCallableThrowsNot($callableProxy, InvalidArrayAssertArgumentException::class);
         self::assertInstanceOf(ArrayHasItemWith::class, $callableProxy->getReturnValue());
     }
 
@@ -410,7 +410,7 @@ class ArrayAssertsTraitTest extends TestCase
 
         self::assertCallableThrowsNot(
             self::callableProxy([ Assert::class, 'assertArrayHasItemWith' ], $index, $constraint, $array),
-            InvalidArrayAssertTestArgumentException::class
+            InvalidArrayAssertArgumentException::class
         );
     }
 

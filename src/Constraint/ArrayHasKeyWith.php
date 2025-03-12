@@ -24,7 +24,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Util\Exporter;
-use PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException;
+use PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException;
 
 /**
  * Constraint that asserts that an array has a given key and that its value
@@ -57,7 +57,7 @@ class ArrayHasKeyWith extends Constraint
     public function __construct($key, $constraint)
     {
         if (!(is_int($key) || is_string($key))) {
-            throw InvalidArrayAssertTestArgumentException::create(1, 'integer or string');
+            throw InvalidArrayAssertArgumentException::create(1, 'integer or string');
         }
 
         $this->key = $key;

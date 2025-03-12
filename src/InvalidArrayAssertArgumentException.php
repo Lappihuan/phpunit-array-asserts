@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace PhrozenByte\PHPUnitThrowableAsserts;
+namespace PhrozenByte\PHPUnitArrayAsserts;
 
 
 use InvalidArgumentException;
 use Throwable;
 
-class InvalidArrayAssertTestArgumentException extends InvalidArgumentException
+class InvalidArrayAssertArgumentException extends InvalidArgumentException
 {
 #Expected :'Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertAssociativeArray() must be an array or ArrayAccess'
 #Actual   :'Argument 2 of PhrozenByte\PHPUnitThrowableAsserts\ArrayAssert is invalid: array or ArrayAccess'

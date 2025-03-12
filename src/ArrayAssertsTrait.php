@@ -29,7 +29,7 @@ use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasItemWith;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasKeyWith;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\AssociativeArray;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray;
-use PhrozenByte\PHPUnitThrowableAsserts\InvalidArrayAssertTestArgumentException;
+use PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException;
 use Traversable;
 
 /**
@@ -72,11 +72,11 @@ trait ArrayAssertsTrait
         string $message = ''
     ): void {
         if (!(is_array($array) || ($array instanceof ArrayAccess))) {
-            throw InvalidArrayAssertTestArgumentException::create(2, 'array or ArrayAccess');
+            throw InvalidArrayAssertArgumentException::create(2, 'array or ArrayAccess');
         }
 
         if (!is_array($array) && !$allowAdditional) {
-            throw InvalidArrayAssertTestArgumentException::create(2, 'array when argument #4 is set to true');
+            throw InvalidArrayAssertArgumentException::create(2, 'array when argument #4 is set to true');
         }
 
         $constraint = new AssociativeArray($constraints, $allowMissing, $allowAdditional);
@@ -119,7 +119,7 @@ trait ArrayAssertsTrait
     public static function assertArrayHasKeyWith($key, $constraint, $array, string $message = ''): void
     {
         if (!(is_array($array) || ($array instanceof ArrayAccess))) {
-            throw InvalidArrayAssertTestArgumentException::create(3, 'array or ArrayAccess');
+            throw InvalidArrayAssertArgumentException::create(3, 'array or ArrayAccess');
         }
 
         $itemConstraint = new ArrayHasKeyWith($key, $constraint);
@@ -165,7 +165,7 @@ trait ArrayAssertsTrait
         string $message = ''
     ): void {
         if (!(is_array($array) || ($array instanceof Traversable))) {
-            throw InvalidArrayAssertTestArgumentException::create(1, 'array or Traversable');
+            throw InvalidArrayAssertArgumentException::create(1, 'array or Traversable');
         }
 
         $itemConstraint = new SequentialArray($minItems, $maxItems, $constraint, $ignoreKeys);
@@ -209,7 +209,7 @@ trait ArrayAssertsTrait
     public static function assertArrayHasItemWith(int $index, $constraint, $array, string $message = ''): void
     {
         if (!(is_array($array) || ($array instanceof Traversable))) {
-            throw InvalidArrayAssertTestArgumentException::create(3, 'array or Traversable');
+            throw InvalidArrayAssertArgumentException::create(3, 'array or Traversable');
         }
         $constraint = new ArrayHasItemWith($index, $constraint);
         PHPUnitAssert::assertThat($array, $constraint, $message);
