@@ -44,5 +44,10 @@
         "type": "git",
         "url": "https://github.com/Lappihuan/phpunit-throwable-asserts"
       }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "parallel-lint src tests",
+        "psalm": "psalm"
     }
 }
