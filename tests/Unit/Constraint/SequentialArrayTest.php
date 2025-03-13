@@ -103,7 +103,6 @@ class SequentialArrayTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderEvaluate
      *
      * @param int $minItems
      * @param int|null $maxItems
@@ -112,6 +111,7 @@ class SequentialArrayTest extends TestCase
      * @param mixed $other
      * @throws \Throwable
      */
+    #[DataProvider('dataProviderEvaluate')]
     public function testEvaluate(int $minItems, ?int $maxItems, $constraint, bool $ignoreKeys, $other): void
     {
         $mockedConstraint = null;
@@ -133,7 +133,7 @@ class SequentialArrayTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderEvaluate(): array
+    public static function dataProviderEvaluate(): array
     {
         return self::getTestDataSets('testEvaluate');
     }

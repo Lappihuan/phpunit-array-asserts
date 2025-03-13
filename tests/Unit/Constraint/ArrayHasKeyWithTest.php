@@ -100,7 +100,7 @@ class ArrayHasKeyWithTest extends TestCase
         $mockedConstraint = $this->mockConstraint(
             $constraint,
             [ 'evaluate' => $this->once() ],
-            [ $expectedEvaluationValue, '', true ]
+            [ $expectedEvaluationValue, '', true ],
         );
 
         $itemConstraint = new ArrayHasKeyWith($key, $mockedConstraint);

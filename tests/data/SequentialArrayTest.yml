@@ -300,7 +300,7 @@ testEvaluate:
         constraint: ~
         ignoreKeys: true
         other: { foo: 2, bar: 1, baz: 0 }
-        expectedExceptionMessage: Failed asserting that %s is a sequential array.
+
     -   minItems: 0
         maxItems: ~
         constraint: ~
@@ -308,7 +308,6 @@ testEvaluate:
         other:
             ~object: ArrayIterator
             array: { 2: "foo", 1: "bar", 0: "baz" }
-        expectedExceptionMessage: Failed asserting that %s is a sequential array.
 
 testEvaluateFail:
     -   minItems: 0
