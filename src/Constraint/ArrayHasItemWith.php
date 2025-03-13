@@ -44,6 +44,8 @@ use Traversable;
  * passed in the constructor. The constraint can either be an arbitrary
  * `Constraint` instance (e.g. `PHPUnit\Framework\Constraint\StringContains`),
  * or any static value, requiring an exact match of the value.
+ * 
+ * @psalm-suppress UnusedClass
  */
 class ArrayHasItemWith extends Constraint
 {

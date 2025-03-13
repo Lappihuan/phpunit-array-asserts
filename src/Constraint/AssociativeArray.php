@@ -40,6 +40,8 @@ use PHPUnit\Util\Exporter;
  * constructor. Constraints can either be arbitrary `Constraint` instances
  * (e.g. `PHPUnit\Framework\Constraint\StringContains`), or any static value,
  * requiring exact matches of the values.
+ * 
+ * @psalm-suppress UnusedClass
  */
 class AssociativeArray extends Constraint
 {
