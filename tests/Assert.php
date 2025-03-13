@@ -25,6 +25,7 @@ namespace PhrozenByte\PHPUnitArrayAsserts;
  * This static class just uses the {@see ArrayAssertsTrait} trait. Refer to
  * {@see ArrayAssertsTrait} for more info.
  */
+
 class Assert
 {
     use ArrayAssertsTrait;
