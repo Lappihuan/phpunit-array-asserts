@@ -17,7 +17,9 @@
 
 declare(strict_types=1);
 
-namespace PhrozenByte\PHPUnitArrayAsserts;
+namespace PhrozenByte\PHPUnitArrayAsserts\Tests;
+
+use PhrozenByte\PHPUnitArrayAsserts\ArrayAssertsTrait;
 
 /**
  * A set of array-related assertion methods.

@@ -81,6 +81,7 @@ class AssociativeArray extends Constraint
      *
      * @return string string representation of the Constraint
      */
+    #[\Override]
     public function toString(): string
     {
         if (!$this->constraints) {
@@ -119,6 +120,7 @@ class AssociativeArray extends Constraint
      *
      * @return bool boolean indicating whether the value matches the Constraint
      */
+    #[\Override]
     protected function matches($other): bool
     {
         foreach ($this->constraints as $key => $constraint) {
@@ -144,6 +146,7 @@ class AssociativeArray extends Constraint
     /**
      * Returns the number of assertions performed by this Constraint.
      */
+    #[\Override]
     public function count(): int
     {
         $count = 1;
@@ -164,6 +167,7 @@ class AssociativeArray extends Constraint
      *
      * @return string the failure description
      */
+    #[\Override]
     protected function failureDescription($other): string
     {
         if (!(is_array($other) || ($other instanceof ArrayAccess))) {
@@ -180,6 +184,7 @@ class AssociativeArray extends Constraint
      *
      * @return string the failure description
      */
+    #[\Override]
     protected function additionalFailureDescription($other): string
     {
         if (!(is_array($other) || ($other instanceof ArrayAccess))) {

@@ -38,7 +38,7 @@ Usage
 
 There are three (basically equivalent) options to use `PHPUnitArrayAssertions`:
 
-- By using the static [class `PhrozenByte\PHPUnitArrayAsserts\Assert`](https://github.com/PhrozenByte/phpunit-array-asserts/blob/master/src/Assert.php)
+- By using the static [class `PhrozenByte\PHPUnitArrayAsserts\Tests\Assert`](https://github.com/PhrozenByte/phpunit-array-asserts/blob/master/src/Assert.php)
 - By using the [trait `PhrozenByte\PHPUnitArrayAsserts\ArrayAssertsTrait`](https://github.com/PhrozenByte/phpunit-array-asserts/blob/master/src/ArrayAssertsTrait.php) in your test case
 - By creating new [constraint instances](https://github.com/PhrozenByte/phpunit-array-asserts/tree/master/src/Constraint) (`PhrozenByte\PHPUnitArrayAsserts\Constraint\…`)
 

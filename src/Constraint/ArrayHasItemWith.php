@@ -70,6 +70,7 @@ class ArrayHasItemWith extends Constraint
      *
      * @return string string representation of the Constraint
      */
+    #[\Override]
     public function toString(): string
     {
         return 'is an array that has a value at index ' . $this->index . ' '
@@ -95,6 +96,7 @@ class ArrayHasItemWith extends Constraint
      *
      * @return bool boolean indicating whether the value matches the Constraint
      */
+    #[\Override]
     protected function matches($other): bool
     {
         if (is_array($other)) {
@@ -103,7 +105,7 @@ class ArrayHasItemWith extends Constraint
                 return false;
             }
 
-            return $this->constraint->evaluate($other[$this->index], '', true);
+            return $this->constraint->evaluate($other[$this->index], '', true) ?? false;
         }
 
         if ($other instanceof EmptyIterator) {
@@ -134,7 +136,7 @@ class ArrayHasItemWith extends Constraint
             $valid = false;
             foreach ($other as $item) {
                 if ($this->index === $index++) {
-                    $valid = $this->constraint->evaluate($item, '', true);
+                    $valid = $this->constraint->evaluate($item, '', true) ?? false;
                 }
             }
 
@@ -154,6 +156,7 @@ class ArrayHasItemWith extends Constraint
     /**
      * Returns the number of assertions performed by this Constraint.
      */
+    #[\Override]
     public function count(): int
     {
         return $this->constraint->count() + 1;

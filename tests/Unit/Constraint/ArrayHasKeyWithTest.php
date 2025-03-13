@@ -69,7 +69,8 @@ class ArrayHasKeyWithTest extends TestCase
      * @param Constraint|mixed $constraint
      * @param string           $expectedDescription
      */
-    #[DataProvider('dataProviderSelfDescribing')] public function testSelfDescribing($key, $constraint, string $expectedDescription): void
+    #[DataProvider('dataProviderSelfDescribing')]
+    public function testSelfDescribing($key, $constraint, string $expectedDescription): void
     {
         $mockedConstraint = $this->mockConstraint($constraint, [ 'toString' => $this->once() ]);
 
@@ -80,7 +81,7 @@ class ArrayHasKeyWithTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderSelfDescribing(): array
+    public static function dataProviderSelfDescribing(): array
     {
         return self::getTestDataSets('testSelfDescribing');
     }

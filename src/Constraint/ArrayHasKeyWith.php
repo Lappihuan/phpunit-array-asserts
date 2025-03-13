@@ -69,6 +69,7 @@ class ArrayHasKeyWith extends Constraint
      *
      * @return string string representation of the Constraint
      */
+    #[\Override]
     public function toString(): string
     {
         return 'is an array that has the key ' . Exporter::export($this->key) . ' '
@@ -82,6 +83,7 @@ class ArrayHasKeyWith extends Constraint
      *
      * @return bool boolean indicating whether the value matches the Constraint
      */
+    #[\Override]
     protected function matches($other): bool
     {
         $valueExists = false;
@@ -95,12 +97,13 @@ class ArrayHasKeyWith extends Constraint
             return false;
         }
 
-        return $this->constraint->evaluate($other[$this->key], '', true);
+        return $this->constraint->evaluate($other[$this->key], '', true) ?? false;
     }
 
     /**
      * Returns the number of assertions performed by this Constraint.
      */
+    #[\Override]
     public function count(): int
     {
         return $this->constraint->count() + 1;

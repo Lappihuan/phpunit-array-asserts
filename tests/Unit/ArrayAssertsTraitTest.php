@@ -26,7 +26,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\Constraint;
 use PhrozenByte\PHPUnitArrayAsserts\ArrayAssertsTrait;
-use PhrozenByte\PHPUnitArrayAsserts\Assert;
+use PhrozenByte\PHPUnitArrayAsserts\Tests\Assert;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasItemWith;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasKeyWith;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\AssociativeArray;
@@ -47,7 +47,7 @@ use Traversable;
  * @see Assert
  *
  * @covers \PhrozenByte\PHPUnitArrayAsserts\ArrayAssertsTrait
- * @covers \PhrozenByte\PHPUnitArrayAsserts\Assert
+ * @covers \PhrozenByte\PHPUnitArrayAsserts\Tests\Assert
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled

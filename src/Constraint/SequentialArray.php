@@ -28,7 +28,7 @@ use NoRewindIterator;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\InvalidArgumentException;
-use PhrozenByte\PHPUnitArrayAsserts\Tests\InvalidArrayAssertArgumentException;
+use PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException;
 use Traversable;
 
 /**
@@ -106,6 +106,7 @@ class SequentialArray extends Constraint
      *
      * @return string string representation of the Constraint
      */
+    #[\Override]
     public function toString(): string
     {
         if ($this->maxItems === 0) {
@@ -147,6 +148,7 @@ class SequentialArray extends Constraint
      *
      * @return bool boolean indicating whether the value matches the Constraint
      */
+    #[\Override]
     protected function matches($other): bool
     {
         [ $valid, $itemCount, $itemsValid ] = $this->inspectData($other);
@@ -291,6 +293,7 @@ class SequentialArray extends Constraint
     /**
      * Returns the number of assertions performed by this Constraint.
      */
+    #[\Override]
     public function count(): int
     {
         return ($this->constraint !== null) ? $this->constraint->count() + 1 : 1;

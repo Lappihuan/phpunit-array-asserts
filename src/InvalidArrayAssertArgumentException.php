@@ -9,7 +9,7 @@ use Throwable;
 
 class InvalidArrayAssertArgumentException extends InvalidArgumentException
 {
-#Expected :'Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertAssociativeArray() must be an array or ArrayAccess'
+#Expected :'Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Tests\Assert::assertAssociativeArray() must be an array or ArrayAccess'
 #Actual   :'Argument 2 of PhrozenByte\PHPUnitThrowableAsserts\ArrayAssert is invalid: array or ArrayAccess'
 
     public static function create(int $arg, string $message): self {

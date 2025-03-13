@@ -48,7 +48,7 @@ testAssociativeArrayFail:
         array: this is no array
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
-            Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertAssociativeArray()
+            Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Tests\Assert::assertAssociativeArray()
             must be an array or ArrayAccess
     -   <<: *testAssociativeArrayBase
         allowAdditional: false
@@ -56,7 +56,7 @@ testAssociativeArrayFail:
             ~object: PhrozenByte\PHPUnitArrayAsserts\Tests\Utils\ArrayAccessible
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
-            Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertAssociativeArray()
+            Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Tests\Assert::assertAssociativeArray()
             must be an array when argument #4 is set to true
 
 testArrayHasKeyWith:
@@ -76,7 +76,7 @@ testArrayHasKeyWithFail:
         array: this is no array
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
-            Argument #3 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertArrayHasKeyWith()
+            Argument #3 of PhrozenByte\PHPUnitArrayAsserts\Tests\Assert::assertArrayHasKeyWith()
             must be an array or ArrayAccess
 
 testSequentialArray:
@@ -92,7 +92,7 @@ testSequentialArrayFail:
         array: this is no array
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
-            Argument #1 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertSequentialArray()
+            Argument #1 of PhrozenByte\PHPUnitArrayAsserts\Tests\Assert::assertSequentialArray()
             must be an array or Traversable
 
 testArrayHasItemWith:
@@ -108,5 +108,5 @@ testArrayHasItemWithFail:
         array: this is no array
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
-            Argument #3 of PhrozenByte\PHPUnitArrayAsserts\Assert::assertArrayHasItemWith()
+            Argument #3 of PhrozenByte\PHPUnitArrayAsserts\Tests\Assert::assertArrayHasItemWith()
             must be an array or Traversable

@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhrozenByte\PHPUnitArrayAsserts\Tests\Unit\Constraint;
 
 use ArrayIterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray;
@@ -37,7 +38,6 @@ use SebastianBergmann\Exporter\Exporter;
 class SequentialArrayTest extends TestCase
 {
     /**
-     * @dataProvider dataProviderInvalidParameters
      *
      * @param int $minItems
      * @param int|null $maxItems
@@ -47,6 +47,7 @@ class SequentialArrayTest extends TestCase
      * @param string $expectedExceptionMessage
      * @throws \Throwable
      */
+    #[DataProvider('dataProviderInvalidParameters')]
     public function testInvalidParameters(
         int $minItems,
         ?int $maxItems,
@@ -63,13 +64,12 @@ class SequentialArrayTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderInvalidParameters(): array
+    public static function dataProviderInvalidParameters(): array
     {
         return self::getTestDataSets('testInvalidParameters');
     }
 
     /**
-     * @dataProvider dataProviderSelfDescribing
      *
      * @param int                   $minItems
      * @param int|null              $maxItems
@@ -77,6 +77,7 @@ class SequentialArrayTest extends TestCase
      * @param bool                  $ignoreKeys
      * @param string                $expectedDescription
      */
+    #[DataProvider('dataProviderSelfDescribing')]
     public function testSelfDescribing(
         int $minItems,
         ?int $maxItems,
@@ -96,7 +97,7 @@ class SequentialArrayTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderSelfDescribing(): array
+    public static function dataProviderSelfDescribing(): array
     {
         return self::getTestDataSets('testSelfDescribing');
     }
@@ -138,7 +139,6 @@ class SequentialArrayTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderEvaluateFail
      *
      * @param int $minItems
      * @param int|null $maxItems
@@ -149,6 +149,7 @@ class SequentialArrayTest extends TestCase
      * @param string $expectedExceptionMessage
      * @throws \Throwable
      */
+    #[DataProvider('dataProviderEvaluateFail')]
     public function testEvaluateFail(
         int $minItems,
         ?int $maxItems,
@@ -178,13 +179,12 @@ class SequentialArrayTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderEvaluateFail(): array
+    public static function dataProviderEvaluateFail(): array
     {
         return self::getTestDataSets('testEvaluateFail');
     }
 
     /**
-     * @dataProvider dataProviderPreEvaluateFail
      *
      * @param int $minItems
      * @param int|null $maxItems
@@ -194,6 +194,7 @@ class SequentialArrayTest extends TestCase
      * @param string $expectedExceptionMessage
      * @throws \Throwable
      */
+    #[DataProvider('dataProviderPreEvaluateFail')]
     public function testPreEvaluateFail(
         int $minItems,
         ?int $maxItems,
@@ -216,7 +217,7 @@ class SequentialArrayTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderPreEvaluateFail(): array
+    public static function dataProviderPreEvaluateFail(): array
     {
         return self::getTestDataSets('testPreEvaluateFail');
     }
@@ -277,7 +278,6 @@ class SequentialArrayTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderCountable
      *
      * @param int                   $minItems
      * @param int|null              $maxItems
@@ -285,6 +285,7 @@ class SequentialArrayTest extends TestCase
      * @param bool                  $ignoreKeys
      * @param int                   $expectedCount
      */
+    #[DataProvider('dataProviderCountable')]
     public function testCountable(
         int $minItems,
         ?int $maxItems,
@@ -304,7 +305,7 @@ class SequentialArrayTest extends TestCase
     /**
      * @return array[]
      */
-    public function dataProviderCountable(): array
+    public static function dataProviderCountable(): array
     {
         return self::getTestDataSets('testCountable');
     }

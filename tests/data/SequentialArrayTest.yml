@@ -31,7 +31,7 @@ testInvalidParameters:
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
             Argument #1 of PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray::__construct()
-            must be a non-negative integer
+            must be an non-negative integer
     -   minItems: 0
         maxItems: -1
         constraint: ~
@@ -39,7 +39,7 @@ testInvalidParameters:
         expectedException: PhrozenByte\PHPUnitArrayAsserts\InvalidArrayAssertArgumentException
         expectedExceptionMessage: >-
             Argument #2 of PhrozenByte\PHPUnitArrayAsserts\Constraint\SequentialArray::__construct()
-            must be a non-negative integer
+            must be an non-negative integer
     -   minItems: 2
         maxItems: 1
         constraint: ~
