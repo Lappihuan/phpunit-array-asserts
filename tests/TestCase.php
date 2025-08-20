@@ -40,7 +40,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     /** @var array[][][] */
     protected static $testDataSets = [];
-
     /**
      * Mocks a constraint.
      *
@@ -59,38 +58,44 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             return $constraint;
         }
 
-        /** @var Constraint|MockObject $mockedConstraint */
+        /** @var Constraint&MockObject $mockedConstraint */
         $mockedConstraint = $this->getMockBuilder(get_class($constraint))
             ->disableOriginalConstructor()
-            ->disableOriginalClone()
-            ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
-            ->disableAutoReturnValueGeneration()
-            ->onlyMethods([ 'toString', 'evaluate', 'count' ])
+            ->onlyMethods(['toString', 'evaluate', 'count'])
             ->getMock();
 
-        $mockedConstraint
-            ->expects($invocationRules['toString'] ?? $this->any())
-            ->method('toString')
-            ->willReturnCallback([ $constraint, 'toString' ]);
-
-        if (isset($invocationRules['evaluate']) && ($evaluateParameters !== null)) {
-            $mockedConstraint
-                ->expects($invocationRules['evaluate'])
-                ->method('evaluate')
-                ->with(...$evaluateParameters)
-                ->willReturnCallback([ $constraint, 'evaluate' ]);
+        // toString
+        if (array_key_exists('toString', $invocationRules) && $invocationRules['toString'] !== null) {
+            $mockedConstraint->expects($invocationRules['toString'])
+                ->method('toString')
+                ->willReturnCallback([$constraint, 'toString']);
         } else {
-            $mockedConstraint
-                ->expects($invocationRules['evaluate'] ?? $this->never())
-                ->method('evaluate')
-                ->willReturnCallback([ $constraint, 'evaluate' ]);
+            $mockedConstraint->method('toString')
+                ->willReturnCallback([$constraint, 'toString']);
         }
 
-        $mockedConstraint
-            ->expects($invocationRules['count'] ?? $this->any())
-            ->method('count')
-            ->willReturnCallback([ $constraint, 'count' ]);
+        // evaluate (default: never)
+        if (array_key_exists('evaluate', $invocationRules) && $invocationRules['evaluate'] !== null) {
+            $eval = $mockedConstraint->expects($invocationRules['evaluate'])
+                ->method('evaluate');
+        } else {
+            $eval = $mockedConstraint->expects($this->never())
+                ->method('evaluate');
+        }
+        if ($evaluateParameters !== null) {
+            $eval->with(...$evaluateParameters);
+        }
+        $eval->willReturnCallback([$constraint, 'evaluate']);
+
+        // count
+        if (array_key_exists('count', $invocationRules) && $invocationRules['count'] !== null) {
+            $mockedConstraint->expects($invocationRules['count'])
+                ->method('count')
+                ->willReturnCallback([$constraint, 'count']);
+        } else {
+            $mockedConstraint->method('count')
+                ->willReturnCallback([$constraint, 'count']);
+        }
 
         return $mockedConstraint;
     }
