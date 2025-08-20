@@ -24,7 +24,6 @@ use PHPUnit\Framework\Assert as PHPUnitAssert;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\InvalidArgumentException;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasItemWith;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\ArrayHasKeyWith;
 use PhrozenByte\PHPUnitArrayAsserts\Constraint\AssociativeArray;
@@ -60,7 +59,7 @@ trait ArrayAssertsTrait
      * @param string               $message         additional information about the test
      *
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      * @throws Exception
      */
     public static function assertAssociativeArray(
@@ -71,11 +70,11 @@ trait ArrayAssertsTrait
         string $message = ''
     ): void {
         if (!(is_array($array) || ($array instanceof ArrayAccess))) {
-            throw InvalidArgumentException::create(2, 'array or ArrayAccess');
+            throw InvalidArrayAssertArgumentException::create(2, 'array or ArrayAccess');
         }
 
         if (!is_array($array) && !$allowAdditional) {
-            throw InvalidArgumentException::create(2, 'array when argument #4 is set to true');
+            throw InvalidArrayAssertArgumentException::create(2, 'array when argument #4 is set to true');
         }
 
         $constraint = new AssociativeArray($constraints, $allowMissing, $allowAdditional);
@@ -92,7 +91,7 @@ trait ArrayAssertsTrait
      *
      * @return AssociativeArray
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      */
     public static function associativeArray(
         array $constraints,
@@ -112,13 +111,13 @@ trait ArrayAssertsTrait
      * @param string            $message    additional information about the test
      *
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      * @throws Exception
      */
     public static function assertArrayHasKeyWith($key, $constraint, $array, string $message = ''): void
     {
         if (!(is_array($array) || ($array instanceof ArrayAccess))) {
-            throw InvalidArgumentException::create(3, 'array or ArrayAccess');
+            throw InvalidArrayAssertArgumentException::create(3, 'array or ArrayAccess');
         }
 
         $itemConstraint = new ArrayHasKeyWith($key, $constraint);
@@ -133,7 +132,7 @@ trait ArrayAssertsTrait
      *
      * @return ArrayHasKeyWith
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      */
     public static function arrayHasKeyWith($key, $constraint): ArrayHasKeyWith
     {
@@ -152,7 +151,7 @@ trait ArrayAssertsTrait
      * @param string                $message    additional information about the test
      *
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      * @throws Exception
      */
     public static function assertSequentialArray(
@@ -164,7 +163,7 @@ trait ArrayAssertsTrait
         string $message = ''
     ): void {
         if (!(is_array($array) || ($array instanceof Traversable))) {
-            throw InvalidArgumentException::create(1, 'array or Traversable');
+            throw InvalidArrayAssertArgumentException::create(1, 'array or Traversable');
         }
 
         $itemConstraint = new SequentialArray($minItems, $maxItems, $constraint, $ignoreKeys);
@@ -181,7 +180,7 @@ trait ArrayAssertsTrait
      *
      * @return SequentialArray
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      */
     public static function sequentialArray(
         int $minItems,
@@ -202,13 +201,13 @@ trait ArrayAssertsTrait
      * @param string            $message    additional information about the test
      *
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
+     * @throws InvalidArrayAssertArgumentException
      * @throws Exception
      */
     public static function assertArrayHasItemWith(int $index, $constraint, $array, string $message = ''): void
     {
         if (!(is_array($array) || ($array instanceof Traversable))) {
-            throw InvalidArgumentException::create(3, 'array or Traversable');
+            throw InvalidArrayAssertArgumentException::create(3, 'array or Traversable');
         }
         $constraint = new ArrayHasItemWith($index, $constraint);
         PHPUnitAssert::assertThat($array, $constraint, $message);
