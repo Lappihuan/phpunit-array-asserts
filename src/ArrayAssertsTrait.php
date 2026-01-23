@@ -157,7 +157,7 @@ trait ArrayAssertsTrait
     public static function assertSequentialArray(
         $array,
         int $minItems,
-        int $maxItems = null,
+        ?int $maxItems = null,
         $constraint = null,
         bool $ignoreKeys = false,
         string $message = ''
@@ -184,7 +184,7 @@ trait ArrayAssertsTrait
      */
     public static function sequentialArray(
         int $minItems,
-        int $maxItems = null,
+        ?int $maxItems = null,
         $constraint = null,
         bool $ignoreKeys = false
     ): SequentialArray {
